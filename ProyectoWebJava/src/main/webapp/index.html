@@ -17,6 +17,10 @@
 				$.ajax({
 					url:'EjemploServlet',
 					type:'GET',
+					data : {
+		                reqValue : '4',
+		                reqValue2 : '2'
+		            },
 					success:function(response) {
 						$('#servlet_msg').html(response);
 					}
@@ -29,6 +33,7 @@
 		<p>Ejemplo de Servlet Java</p>
 		<br>
 		<label id="servlet_msg">Vacia</label>
+		
 		<br>
 		<button type="button" class="btn btn-warning" id="btn_load">Cargar Información</button>
 	</div>

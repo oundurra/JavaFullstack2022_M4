@@ -1,6 +1,9 @@
 package Modulo4;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +29,16 @@ public class EjemploServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Mensaje enviado desde").append(request.getContextPath());
+     /*   Connection con;
+		try {
+			con = DBConnection.initializeDatabase();
+			con.close();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		response.getWriter().append("Parametro de entrada: ").append(request.getParameter("reqValue") + " " + request.getParameter("reqValue2"));
 	}
 
 	/**
