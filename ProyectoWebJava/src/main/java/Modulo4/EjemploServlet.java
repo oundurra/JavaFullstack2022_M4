@@ -2,6 +2,8 @@ package Modulo4;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -29,16 +31,23 @@ public class EjemploServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-     /*   Connection con;
-		try {
-			con = DBConnection.initializeDatabase();
-			con.close();
+        Connection conn;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String vret = null;
 
+		try {
+			conn = DBConnection.initializeDatabase();
+			pst = conn.prepareStatement("select curdate() curdate from dual"); 
+			rs = pst.executeQuery();
+			rs.next();
+			vret = rs.getString("curdate");
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		response.getWriter().append("Parametro de entrada: ").append(request.getParameter("reqValue") + " " + request.getParameter("reqValue2"));
+		}
+		
+		response.getWriter().append("Fecha de la base de datos: ").append(vret);
 	}
 
 	/**
