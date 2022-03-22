@@ -13,29 +13,63 @@
 
 	<script>
 		$(document).ready(function() {
-			$('#btn_load').click(function() {
+			$('#btn_select').click(function() {
 				$.ajax({
 					url:'EjemploServlet',
 					type:'GET',
 					data : {
-		                reqValue : '4',
-		                reqValue2 : '2'
+						operation : "select",
+		                dept_no : $("#dept_no").val()
 		            },
 					success:function(response) {
-						$('#servlet_msg').html(response);
+						$('#dept_name').val(response.split(";")[1]);
 					}
 				})	
+			});
+			
+			$('#btn_insert').click(function() {
+				$.ajax({
+					url:'EjemploServlet',
+					type:'GET',
+					data : {
+						operation : "insert",
+		                dept_no : $("#dept_no").val(),
+		                dept_name : $("#dept_name").val()
+		            },
+					success:function(response) {
+						if (response == "Exito") {
+							alert("El registro se ingresó correctamente");
+						} else {
+							alert("Hubo una falla en la inserción");
+						}
+					}
+				})	
+			});
+			
+			$('#btn_clear').click(function() {
+				$("#dept_no").val("");
+		        $("#dept_name").val("");
 			});
 		});
 	</script>
 	
 	<div class="container-fluid">
-		<p>Ejemplo de Servlet Java</p>
-		<br>
-		<label id="servlet_msg">Vacia</label>
+		<div class="jumbotron">
+  			<h1>Ejemplo de Servlet Java con Conexión a Base de Datos</h1>
+  		</div>
+		<div class="form-group">
+  			<label for="dept_no">Código de Departamento</label>
+  			<input type="text" class="form-control" id="dept_no">
+		</div>
+		<div class="form-group">
+  			<label for="dept_name">Nombre de Departamento</label>
+  			<input type="text" class="form-control" id="dept_name">
+		</div>
 		
 		<br>
-		<button type="button" class="btn btn-warning" id="btn_load">Cargar Información</button>
+		<button type="button" class="btn btn-warning" id="btn_select">Consultar</button>
+		<button type="button" class="btn btn-success" id="btn_insert">Agregar</button>
+		<button type="button" class="btn btn-dark" id="btn_clear">Limpiar</button>
 	</div>
 	
 </body>

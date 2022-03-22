@@ -32,22 +32,29 @@ public class EjemploServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         Connection conn;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         String vret = null;
 
 		try {
+			// Inicializa Conexion
 			conn = DBConnection.initializeDatabase();
-			pst = conn.prepareStatement("select curdate() curdate from dual"); 
-			rs = pst.executeQuery();
-			rs.next();
-			vret = rs.getString("curdate");
+			
+			// Utiliza el select del Crud
+			switch(request.getParameter("operation")) {
+				case "select":
+					vret = Department.select(conn,request.getParameter("dept_no"));
+					break;
+				case "insert":
+					if(Department.insert(conn,request.getParameter("dept_no"),request.getParameter("dept_name"))) {
+						vret = "Exito";
+					};
+					break;
+			};
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
-		response.getWriter().append("Fecha de la base de datos: ").append(vret);
+		response.getWriter().append(vret);
 	}
 
 	/**
