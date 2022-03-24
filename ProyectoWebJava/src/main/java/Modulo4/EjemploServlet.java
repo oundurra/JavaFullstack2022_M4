@@ -33,6 +33,7 @@ public class EjemploServlet extends HttpServlet {
 		// TODO Auto-generated method stub
         Connection conn;
         String vret = null;
+        Departments departments;
 
 		try {
 			// Inicializa Conexion
@@ -41,13 +42,24 @@ public class EjemploServlet extends HttpServlet {
 			// Utiliza el select del Crud
 			switch(request.getParameter("operation")) {
 				case "select":
-					vret = Department.select(conn,request.getParameter("dept_no"));
+					departments = DTODepartments.select(conn,request.getParameter("dept_no"));
+					vret = departments.getDept_no() + ";" + departments.getDept_name();
 					break;
 				case "insert":
-					if(Department.insert(conn,request.getParameter("dept_no"),request.getParameter("dept_name"))) {
+					if(DTODepartments.insert(conn,request.getParameter("dept_no"),request.getParameter("dept_name"))) {
 						vret = "Exito";
 					};
 					break;
+				case "update":
+					if(DTODepartments.update(conn,new Departments(request.getParameter("dept_no"),request.getParameter("dept_name")))) {
+						vret = "Exito";
+					};
+					break;
+				case "delete":
+					if(DTODepartments.delete(conn,request.getParameter("dept_no"))) {
+						vret = "Exito";
+					};
+					break;					
 			};
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

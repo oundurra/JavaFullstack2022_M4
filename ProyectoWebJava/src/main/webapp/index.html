@@ -46,6 +46,44 @@
 				})	
 			});
 			
+			$('#btn_update').click(function() {
+				$.ajax({
+					url:'EjemploServlet',
+					type:'GET',
+					data : {
+						operation : "update",
+		                dept_no : $("#dept_no").val(),
+		                dept_name : $("#dept_name").val()
+		            },
+					success:function(response) {
+						if (response == "Exito") {
+							alert("El registro se actualizó correctamente");
+						} else {
+							alert("Hubo una falla en la actualización");
+						}
+					}
+				})	
+			});
+			
+			
+			$('#btn_delete').click(function() {
+				$.ajax({
+					url:'EjemploServlet',
+					type:'GET',
+					data : {
+						operation : "delete",
+		                dept_no : $("#dept_no").val()
+		            },
+					success:function(response) {
+						if (response == "Exito") {
+							alert("El registro se eliminó correctamente");
+						} else {
+							alert("Hubo una falla en la eliminación");
+						}
+					}
+				})	
+			});
+			
 			$('#btn_clear').click(function() {
 				$("#dept_no").val("");
 		        $("#dept_name").val("");
@@ -69,6 +107,8 @@
 		<br>
 		<button type="button" class="btn btn-warning" id="btn_select">Consultar</button>
 		<button type="button" class="btn btn-success" id="btn_insert">Agregar</button>
+		<button type="button" class="btn btn-info" id="btn_update">Actualizar</button>
+		<button type="button" class="btn btn-danger" id="btn_delete">Eliminar</button>
 		<button type="button" class="btn btn-dark" id="btn_clear">Limpiar</button>
 	</div>
 	
