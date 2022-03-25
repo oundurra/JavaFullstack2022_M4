@@ -5,13 +5,13 @@ import java.sql.*;
 
 public class DTODepartments {
 	
-	public static boolean insert(Connection conn, String dept_no, String dept_name) {
+	public static boolean insert(Connection conn, Departments departments) {
 		PreparedStatement pst;
 		boolean vret = false;
 		try {
 			pst = conn.prepareStatement("INSERT INTO departments VALUES (?,?)" );
-			pst.setString(1, dept_no);
-			pst.setString(2, dept_name);
+			pst.setString(1, departments.getDept_no());
+			pst.setString(2, departments.getDept_name());
 			pst.execute();
 			vret = true;
 		} catch (SQLException e) {
@@ -71,6 +71,5 @@ public class DTODepartments {
 		} 
 
 		return vret;
-	}
-	
+	}	
 }

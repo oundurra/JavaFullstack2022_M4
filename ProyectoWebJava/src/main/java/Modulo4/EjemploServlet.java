@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,33 +35,87 @@ public class EjemploServlet extends HttpServlet {
 		// TODO Auto-generated method stub
         Connection conn;
         String vret = null;
-        Departments departments;
+
 
 		try {
 			// Inicializa Conexion
 			conn = DBConnection.initializeDatabase();
 			
-			// Utiliza el select del Crud
-			switch(request.getParameter("operation")) {
+			// Implementa el Crud
+			switch(request.getParameter("table")) {
+			case "departments":
+		        Departments departments;				
+				switch(request.getParameter("operation")) {
+					case "select":
+						departments = DTODepartments.select(conn,request.getParameter("dept_no"));
+						vret = departments.getDept_no() + ";" + departments.getDept_name();
+						break;
+					case "insert":
+						if(DTODepartments.insert(conn,new Departments(request.getParameter("dept_no"),request.getParameter("dept_name")))) {
+							vret = "Exito";
+						};
+						break;
+					case "update":
+						if(DTODepartments.update(conn,new Departments(request.getParameter("dept_no"),request.getParameter("dept_name")))) {
+							vret = "Exito";
+						};
+						break;
+					case "delete":
+						if(DTODepartments.delete(conn,request.getParameter("dept_no"))) {
+							vret = "Exito";
+						};
+						break;					
+				};
+				break;
+			case "employees":
+		        Employees employees;
+				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+				switch(request.getParameter("operation")) {
 				case "select":
-					departments = DTODepartments.select(conn,request.getParameter("dept_no"));
-					vret = departments.getDept_no() + ";" + departments.getDept_name();
+					employees = DTOEmployees.select(conn,Integer.parseInt(request.getParameter("emp_no")));
+					vret = employees.getEmp_no()
+							+ ";" + dateFormat.format(employees.getBirth_date())
+							+ ";" + employees.getFirst_name()
+							+ ";" + employees.getLast_name()
+							+ ";" + employees.getGender()
+							+ ";" + dateFormat.format(employees.getHire_date());
 					break;
 				case "insert":
-					if(DTODepartments.insert(conn,request.getParameter("dept_no"),request.getParameter("dept_name"))) {
-						vret = "Exito";
-					};
+					try {
+						if(DTOEmployees.insert(conn,new Employees(
+														Integer.parseInt(request.getParameter("emp_no"))
+														,dateFormat.parse(request.getParameter("birth_date"))
+														,request.getParameter("first_name")
+														,request.getParameter("last_name")
+														,request.getParameter("gender")
+														,dateFormat.parse(request.getParameter("hire_date"))))) {
+							vret = "Exito";
+						};
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 					break;
 				case "update":
-					if(DTODepartments.update(conn,new Departments(request.getParameter("dept_no"),request.getParameter("dept_name")))) {
-						vret = "Exito";
-					};
+					try {
+						if(DTOEmployees.update(conn,new Employees(
+								Integer.parseInt(request.getParameter("emp_no"))
+								,dateFormat.parse(request.getParameter("birth_date"))
+								,request.getParameter("first_name")
+								,request.getParameter("last_name")
+								,request.getParameter("gender")
+								,dateFormat.parse(request.getParameter("hire_date"))))) {
+							vret = "Exito";
+						};
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 					break;
 				case "delete":
-					if(DTODepartments.delete(conn,request.getParameter("dept_no"))) {
+					if(DTOEmployees.delete(conn,Integer.parseInt(request.getParameter("emp_no")))) {
 						vret = "Exito";
 					};
 					break;					
+				};
 			};
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

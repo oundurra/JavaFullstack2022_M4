@@ -12,82 +12,216 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
 	<script>
+		var currtable = "";
+	
 		$(document).ready(function() {
 			$('#btn_select').click(function() {
-				$.ajax({
-					url:'EjemploServlet',
-					type:'GET',
-					data : {
-						operation : "select",
-		                dept_no : $("#dept_no").val()
-		            },
-					success:function(response) {
-						$('#dept_name').val(response.split(";")[1]);
+				if (currtable=="") {
+					alert("Debe seleccionar una tabla.")
+				} else {
+					switch(currtable) {
+						case "employees":
+							$.ajax({
+								url:'EjemploServlet',
+								type:'GET',
+								data : {
+									operation : "select",
+									table : currtable,
+					                emp_no : $("#emp_no").val()
+					            },
+								success:function(response) {
+									employee = response.split(";");
+									$('#birth_date').val(employee[1]);
+									$('#first_name').val(employee[2]);
+									$('#last_name').val(employee[3]);
+									$('#gender').val(employee[4]);
+									$('#hire_date').val(employee[5]);									
+								}
+							})
+							break;					
+						case "departments":
+							$.ajax({
+								url:'EjemploServlet',
+								type:'GET',
+								data : {
+									operation : "select",
+									table : currtable,
+					                dept_no : $("#dept_no").val()
+					            },
+								success:function(response) {
+									$('#dept_name').val(response.split(";")[1]);
+								}
+							})
+							break;
 					}
-				})	
+				}
 			});
 			
 			$('#btn_insert').click(function() {
-				$.ajax({
-					url:'EjemploServlet',
-					type:'GET',
-					data : {
-						operation : "insert",
-		                dept_no : $("#dept_no").val(),
-		                dept_name : $("#dept_name").val()
-		            },
-					success:function(response) {
-						if (response == "Exito") {
-							alert("El registro se ingresó correctamente");
-						} else {
-							alert("Hubo una falla en la inserción");
-						}
-					}
-				})	
+				if (currtable=="") {
+					alert("Debe seleccionar una tabla.")
+				} else {
+					switch(currtable) {	
+					case "employees":
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "insert",
+								table : currtable,
+				                emp_no : $("#emp_no").val(),
+								birth_date : $("#birth_date").val(),
+				                first_name : $("#first_name").val(),
+				                last_name : $("#last_name").val(),
+				                gender : $("#gender").val(),
+				                hire_date : $("#hire_date").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se ingresó correctamente");
+								} else {
+									alert("Hubo una falla en la inserción");
+								}
+							}
+						})
+						break;
+					case "departments":
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "insert",
+								table : currtable,
+				                dept_no : $("#dept_no").val(),
+				                dept_name : $("#dept_name").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se ingresó correctamente");
+								} else {
+									alert("Hubo una falla en la inserción");
+								}
+							}
+						})
+						break;						
+					};
+				};
 			});
 			
 			$('#btn_update').click(function() {
-				$.ajax({
-					url:'EjemploServlet',
-					type:'GET',
-					data : {
-						operation : "update",
-		                dept_no : $("#dept_no").val(),
-		                dept_name : $("#dept_name").val()
-		            },
-					success:function(response) {
-						if (response == "Exito") {
-							alert("El registro se actualizó correctamente");
-						} else {
-							alert("Hubo una falla en la actualización");
-						}
+				if (currtable=="") {
+					alert("Debe seleccionar una tabla.")
+				} else {
+					switch(currtable) {	
+					case "employees":				
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "update",
+								table : currtable,
+				                emp_no : $("#emp_no").val(),
+								birth_date : $("#birth_date").val(),
+				                first_name : $("#first_name").val(),
+				                last_name : $("#last_name").val(),
+				                gender : $("#gender").val(),
+				                hire_date : $("#hire_date").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se actualizó correctamente");
+								} else {
+									alert("Hubo una falla en la actualización");
+								}
+							}
+						})
+						break;
+					case "departments":
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "update",
+								table : currtable,
+				                dept_no : $("#dept_no").val(),
+				                dept_name : $("#dept_name").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se actualizó correctamente");
+								} else {
+									alert("Hubo una falla en la actualización");
+								}
+							}
+						})						
+						break;
 					}
-				})	
+				}
 			});
 			
 			
 			$('#btn_delete').click(function() {
-				$.ajax({
-					url:'EjemploServlet',
-					type:'GET',
-					data : {
-						operation : "delete",
-		                dept_no : $("#dept_no").val()
-		            },
-					success:function(response) {
-						if (response == "Exito") {
-							alert("El registro se eliminó correctamente");
-						} else {
-							alert("Hubo una falla en la eliminación");
-						}
+				if (currtable=="") {
+					alert("Debe seleccionar una tabla.")
+				} else {
+					switch(currtable) {	
+					case "employees":					
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "delete",
+								table : currtable,
+				                emp_no : $("#emp_no").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se eliminó correctamente");
+								} else {
+									alert("Hubo una falla en la eliminación");
+								}
+							}
+						})
+						break;
+					case "departments":
+						$.ajax({
+							url:'EjemploServlet',
+							type:'GET',
+							data : {
+								operation : "delete",
+								table : currtable,
+				                dept_no : $("#dept_no").val()
+				            },
+							success:function(response) {
+								if (response == "Exito") {
+									alert("El registro se eliminó correctamente");
+								} else {
+									alert("Hubo una falla en la eliminación");
+								}
+							}
+						})						
+						break;
 					}
-				})	
+				}
 			});
 			
 			$('#btn_clear').click(function() {
 				$("#dept_no").val("");
 		        $("#dept_name").val("");
 			});
+			
+			$('#btn_employees').click(function() {
+				$("#form-employees").show();
+		        $("#form-department").hide();
+		        currtable = "employees";
+			});
+			
+			$('#btn_departments').click(function() {
+				$("#form-employees").hide();
+		        $("#form-department").show();
+		        currtable = "departments";		        
+			});
+			
 		});
 	</script>
 	
@@ -95,14 +229,49 @@
 		<div class="jumbotron">
   			<h1>Ejemplo de Servlet Java con Conexión a Base de Datos</h1>
   		</div>
-		<div class="form-group">
-  			<label for="dept_no">Código de Departamento</label>
-  			<input type="text" class="form-control" id="dept_no">
+  		
+  		<button type="button" class="btn btn-dark" id="btn_employees">Trabajadores</button>
+  		<button type="button" class="btn btn-dark" id="btn_departments">Departamentos</button>
+  		<br><br>
+  		
+  		<div class="container-fluid" style="display:none" id="form-employees">
+			<div class="form-group">
+	  			<label for="emp_no">Número de Trabajador</label>
+	  			<input type="text" class="form-control" id="emp_no">
+			</div>
+			<div class="form-group">
+	  			<label for="birth_date">Fecha de Nacimiento</label>
+	  			<input type="text" class="form-control" id="birth_date">
+			</div>			
+			<div class="form-group">
+	  			<label for="first_name">Nombre de Trabajador</label>
+	  			<input type="text" class="form-control" id="first_name">
+			</div>
+			<div class="form-group">
+	  			<label for="last_name">Apellido de Trabajador</label>
+	  			<input type="text" class="form-control" id="last_name">
+			</div>
+			<div class="form-group">
+	  			<label for="gender">Sexo</label>
+	  			<input type="text" class="form-control" id="gender">
+			</div>
+			<div class="form-group">
+	  			<label for="hire_date">Fecha de Contratación</label>
+	  			<input type="text" class="form-control" id="hire_date">
+			</div>				
 		</div>
-		<div class="form-group">
-  			<label for="dept_name">Nombre de Departamento</label>
-  			<input type="text" class="form-control" id="dept_name">
+  		
+  		<div class="container-fluid" style="display:none" id="form-department">
+			<div class="form-group">
+	  			<label for="dept_no">Código de Departamento</label>
+	  			<input type="text" class="form-control" id="dept_no">
+			</div>
+			<div class="form-group">
+	  			<label for="dept_name">Nombre de Departamento</label>
+	  			<input type="text" class="form-control" id="dept_name">
+			</div>
 		</div>
+		
 		
 		<br>
 		<button type="button" class="btn btn-warning" id="btn_select">Consultar</button>
